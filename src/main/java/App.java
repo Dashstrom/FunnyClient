@@ -32,18 +32,23 @@ public class App extends Application {
             System.err.println("Couldn't get I/O for the connection to " + serverHost);
             return;
         }
-        try {
-            Scanner sc = new Scanner(System.in);
-            output.write(sc.nextLine());
-            output.flush();
-            System.out.println(input.readLine());
-            output.close();
-            input.close();
-            clientSocket.close();
-        } catch (UnknownHostException e) {
-            System.err.println("Trying to connect to unknown host: " + e);
-        } catch (IOException e) {
-            System.err.println("IOException:  " + e);
+
+        while (true) {
+            try {
+                Scanner sc = new Scanner(System.in);
+                String msg = sc.nextLine();
+                if (msg.toLowerCase().contains("quit")) break;
+                output.write(msg);
+                output.flush();
+                System.out.println(input.readLine());
+                output.close();
+                input.close();
+                clientSocket.close();
+            } catch (UnknownHostException e) {
+                System.err.println("Trying to connect to unknown host: " + e);
+            } catch (IOException e) {
+                System.err.println("IOException:  " + e);
+            }
         }
     }
 
