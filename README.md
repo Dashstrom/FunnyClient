@@ -1,19 +1,21 @@
 # FunnyClient
+
 Just a Funny Client
-# Make maven wrapper
+
+## Make maven wrapper
+
 ```
 mvn -N io.takari:maven:wrapper
 ```
 
+## Get source
 
-# Source
-with git
 ```
 git clone https://github.com/Dashstrom/FunnyClient.git
 cd FunnyClient
 ```
 
-# Build Window
+## Setup java for window
 
 as administrator (not obliged)
 ```
@@ -22,17 +24,14 @@ where java
 setx JAVA_HOME 'Path'
 ```
 
-in normal terminal
-```
-.\mvnw -T 2C clean package -Dmaven.test.skip -DskipTests
-```
-
 # Build Linux
+
 ```
-.\mvnw -T 2C clean package -Dmaven.test.skip -DskipTests
+.\mvnw -T 2C clean package
 ```
 
 # Run
+
 ```
 java -jar target/funny-server-1.0-jar-with-dependencies.jar
 ```
