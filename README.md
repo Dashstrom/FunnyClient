@@ -1,6 +1,6 @@
 # FunnyClient
 
-Just a Funny Client
+Just a Funny Client for upload and download files from a Funny Server.
 
 ## Make maven wrapper
 
@@ -33,5 +33,5 @@ setx JAVA_HOME 'Path'
 # Run
 
 ```
-java -jar target/funny-server-1.0-jar-with-dependencies.jar
+java -jar target/funnyclient-1.0-jar-with-dependencies.jar
 ```
