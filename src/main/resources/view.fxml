@@ -3,17 +3,21 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+<BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onDragDropped="#onDragDropped" onDragOver="#onDragOver" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <top>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox prefHeight="22.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="upload" mnemonicParsing="false" onAction="#onUpload" text="Upload" />
-            <Button fx:id="refresh" mnemonicParsing="false" onAction="#onSearch" text="Refresh" />
-            <TextField fx:id="search" />
+            <Button fx:id="upload" mnemonicParsing="false" onAction="#onUpload" style="-fx-background-color: lightgreen;" text="Upload" />
+            <Button fx:id="refresh" mnemonicParsing="false" onAction="#onSearch" style="-fx-background-color: yellow;" text="Refresh" />
+            <TextField fx:id="search" prefHeight="25.0" prefWidth="488.0" />
          </children>
       </HBox>
    </top>
    <center>
-      <VBox fx:id="list" prefHeight="299.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+      <ScrollPane fx:id="sp" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <content>
+            <VBox fx:id="list" prefHeight="256.0" prefWidth="600.0" />
+         </content>
+      </ScrollPane>
    </center>
 </BorderPane>

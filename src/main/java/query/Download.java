@@ -1,8 +1,12 @@
 package query;
 
 import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.WritableByteChannel;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 public class Download extends Query {
 
@@ -27,10 +31,20 @@ public class Download extends Query {
 
     @Override
     protected void recv(DataInputStream input) throws IOException {
-        int size = input.readInt();
-        byte[] array = new byte[size];
-        int read = input.read(array);
-        if (read != size) throw new IllegalStateException("Invalid file size");
-        Files.write(Paths.get(destination), array);
+        long size = input.readLong();
+        byte[] buffer = new byte[8192];
+        int count;
+        File file = new File(destination);
+        try (FileOutputStream fileStream = new FileOutputStream(file)) {
+            while ((count = input.read(buffer)) > 0){
+                fileStream.write(buffer, 0, count);
+            }
+            fileStream.flush();
+        }
+        long actualSize = Files.size(Paths.get(destination));
+        if (actualSize != size) {
+            file.delete();
+            throw new IOException("Wrong file size receive attempt " + size + " but got " + actualSize);
+        }
     }
 }

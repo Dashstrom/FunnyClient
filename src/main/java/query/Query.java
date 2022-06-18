@@ -23,27 +23,28 @@ public abstract class Query {
         return filename;
     }
 
-    public int getExit() {
-        return exit;
-    }
-
     public void run(String host, int port) throws IOException {
         try (
                 Socket socketClient = new Socket(host, port);
                 DataOutputStream output = new DataOutputStream(new BufferedOutputStream(socketClient.getOutputStream()));
                 DataInputStream input = new DataInputStream(new BufferedInputStream(socketClient.getInputStream()))
         ) {
+            socketClient.setSoTimeout(10000);
+            System.out.println("Running");
             output.write(code);
-            output.writeInt(filename.length());
-            output.writeBytes(filename);
+            output.writeUTF(filename);
+            System.out.println("Start send...");
             send(output);
             output.flush();
+            System.out.println("Send done !");
+            System.out.println("Start recv...");
             this.exit = input.readByte();
             if (this.exit == Code.DENY) {
-                System.out.println("DENY");
+                throw new DeniedActionException();
             } else {
                 recv(input);
             }
+            System.out.println("Done recv !");
         }
     }
 

@@ -19,9 +19,16 @@ public class Upload extends Query {
 
     @Override
     protected void send(DataOutputStream output) throws IOException {
-        byte[] data = Files.readAllBytes(Paths.get(source));
-        output.writeInt(data.length);
-        output.write(data);
+        long size = Files.size(Paths.get(source));
+        output.writeLong(size);
+        int count;
+        byte[] buffer = new byte[8192];
+        File file = new File(source);
+        try (FileInputStream streamFile = new FileInputStream(file)) {
+            while ((count = streamFile.read(buffer)) > 0){
+                output.write(buffer, 0, count);
+            }
+        }
     }
 
     @Override

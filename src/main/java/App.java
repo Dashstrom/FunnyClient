@@ -2,6 +2,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -26,7 +27,7 @@ public class App extends Application {
         stage.setScene(scene);
         stage.setTitle("Funny Client");
         scene.getStylesheets().add(Objects.requireNonNull(App.class.getResource("styles.css")).toExternalForm());
-        // stage.getIcons().add(Images.ICON.get());
+        stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResource("/img/funny.png")).toString()));
         stage.centerOnScreen();
         stage.toFront();
         stage.setResizable(false);
