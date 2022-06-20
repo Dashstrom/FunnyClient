@@ -243,7 +243,7 @@ public class Controller implements Initializable {
         if (filename.length() > MAX_LENGTH)
             filename = filename.substring(0, MAX_LENGTH);
 
-        // Replace accented characters with non-accented characters
+        // Replace accented characters with unaccented characters
         filename = Normalizer.normalize(filename, Normalizer.Form.NFD);
         filename = filename.replaceAll(ACCENT_CHAR, "");
 
