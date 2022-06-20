@@ -239,9 +239,6 @@ public class Controller implements Initializable {
     }
 
     public String securityString(String filename) {
-        Pattern pattern = Pattern.compile(UNAUTHORIZED_CHAR);
-        Matcher matcher = pattern.matcher(filename);
-
         // Shorten the filename if above MAX_LENGTH
         if (filename.length() > MAX_LENGTH)
             filename = filename.substring(0, MAX_LENGTH);
