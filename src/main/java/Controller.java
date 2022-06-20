@@ -18,8 +18,12 @@ import query.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Controller implements Initializable {
 
@@ -42,6 +46,10 @@ public class Controller implements Initializable {
     private VBox list;
 
     private Scene scene;
+
+    private static final String UNAUTHORIZED_CHAR = "[^A-Za-z0-9._-]+";
+    private static final int MAX_LENGTH = 200;
+    private static final String ACCENT_CHAR = "[^\\p{ASCII}]";
 
     public void setScene(Scene scene) {
         this.scene = scene;
@@ -82,7 +90,7 @@ public class Controller implements Initializable {
         HBox box = new HBox();
         TextField field = new TextField();
         field.setPromptText("Nom du fichier");
-        field.setText(file.getName());
+        field.setText(securityString(file.getName()));
 
         box.getChildren().add(new Label("Nom du fichier:"));
         box.getChildren().add(field);
@@ -186,12 +194,13 @@ public class Controller implements Initializable {
         Optional<String> result = askRename(file);
         if (!result.isPresent()) return;
         String filename = result.get();
+        System.out.println(filename);
 
         try {
             Upload upload = new Upload(source, filename);
             upload.run("localhost", 9999);
         }  catch (DeniedActionException err) {
-            handleError("Fichier déjà existant ou nom invalid");
+            handleError("Fichier déjà existant ou nom invalide");
         } catch (IOException err) {
             handleError(err);
         }
@@ -227,5 +236,23 @@ public class Controller implements Initializable {
             }
         }
         event.consume();
+    }
+
+    public String securityString(String filename) {
+        Pattern pattern = Pattern.compile(UNAUTHORIZED_CHAR);
+        Matcher matcher = pattern.matcher(filename);
+
+        // Shorten the filename if above MAX_LENGTH
+        if (filename.length() > MAX_LENGTH)
+            filename = filename.substring(0, MAX_LENGTH);
+
+        // Replace accented characters with normal characters
+        filename = Normalizer.normalize(filename, Normalizer.Form.NFD);
+        filename = filename.replaceAll(ACCENT_CHAR, "");
+
+        // Remove unauthorized characters
+        filename = filename.replaceAll(UNAUTHORIZED_CHAR, "_");
+
+        return filename;
     }
 }
